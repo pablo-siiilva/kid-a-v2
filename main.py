@@ -1,11 +1,10 @@
 import discord
 import time
-import os
-from dotenv import load_dotenv
+import dotenv
 
 # Carregar variáveis de ambiente
-load_dotenv()
-TOKEN = os.getenv("TOKEN")
+config = dotenv.dotenv_values()
+TOKEN = config.get("TOKEN")
 CHANNEL_ID_ORIGINAL = 1246881463266181171  # ID for #one-word-each
 CHANNEL_ID_DESTINATION = 1256777917468381246  # ID for the finished sentences channel
 CHANNEL_ID_DESTINATION_RANDOM = 1243270048295026811  # ID for general chat
@@ -20,9 +19,11 @@ client = discord.Client(intents=intents)
 # Lista para armazenar as palavras
 words = []
 
+
 # Função para formar uma sentença a partir das palavras
 def form_sentence():
     return ' '.join(words)
+
 
 # Função para buscar o histórico de mensagens
 async def fetch_message_history(channel):
@@ -39,6 +40,7 @@ async def fetch_message_history(channel):
     except Exception as e:
         print(f"Error fetching message history: {e}")
 
+
 @client.event
 async def on_ready():
     print(f'Bot connected as {client.user}')
@@ -51,6 +53,22 @@ async def on_ready():
         print(f"Fetched messages: {words}")
     except Exception as e:
         print(f"Error in on_ready: {e}")
+
+
+@client.event
+async def on_connect():
+    print("Bot is attempting to connect to Discord...")
+
+
+@client.event
+async def on_disconnect():
+    print("Bot was disconnected from Discord.")
+
+
+@client.event
+async def on_error(event, *args, **kwargs):
+    print(f"Error detected in event {event}: {args} - {kwargs}")
+
 
 @client.event
 async def on_message(message):
@@ -70,6 +88,7 @@ async def on_message(message):
                 words.clear()
     except Exception as e:
         print(f"Error in on_message: {e}")
+
 
 print("Starting bot...")
 try:
