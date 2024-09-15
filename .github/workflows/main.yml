@@ -24,5 +24,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Run the Discord Bot
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
       run: |
         nohup python main.py &
