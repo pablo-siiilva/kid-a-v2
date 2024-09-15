@@ -27,4 +27,4 @@ jobs:
       env:
         TOKEN: ${{ secrets.TOKEN }}
       run: |
-        nohup python main.py &
+        python main.py 
