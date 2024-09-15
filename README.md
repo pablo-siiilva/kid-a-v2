@@ -22,4 +22,4 @@ TOKEN=[discord client token]
 
 - Support for #one-word-each
 - Command for pairing people on events such as album exchange:
-  - `.pairs [name1] [name2] [etc...]`
+  - `.pairs [name1] [name2] [etc...]` 
