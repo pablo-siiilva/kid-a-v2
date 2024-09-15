@@ -2,9 +2,12 @@ import discord
 import dotenv
 
 import one_word_each
+import album_exchange_pairs
 
 config = dotenv.dotenv_values()
 TOKEN = config.get("TOKEN")
+
+ONE_WORD_EACH_CHANNEL = 1246881463266181171  # ID for #one-word-each
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -17,7 +20,7 @@ client = discord.Client(intents=intents)
 async def on_ready():
     print(f'Bot connected as {client.user}')
     try:
-        await one_word_each.initialize(client)
+        await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
 
     except Exception as e:
         print(f"Error in on_ready: {e}")
@@ -41,7 +44,13 @@ async def on_error(event, *args, **kwargs):
 @client.event
 async def on_message(message):
     try:
-        await one_word_each.handleMessage(client, message)
+        if not message.author.bot:
+            # If message comes from the one-word-each channel
+            if message.channel.id == ONE_WORD_EACH_CHANNEL:
+                await one_word_each.handleMessage(client, message)
+
+            if message.content.startswith(".pairs"):
+                await album_exchange_pairs.handleMessage(client, message)
     except Exception as e:
         print(f"Error in on_message: {e}")
 

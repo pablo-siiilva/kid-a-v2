@@ -17,3 +17,9 @@ Then to set up the environment variables you just put a file named `.env` on the
 ```
 TOKEN=[discord client token]
 ```
+
+## Features
+
+- Support for #one-word-each
+- Command for pairing people on events such as album exchange:
+  - `.pairs [name1] [name2] [etc...]`

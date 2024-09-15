@@ -1,6 +1,5 @@
 import time
 
-CHANNEL_ID_ORIGINAL = 1246881463266181171  # ID for #one-word-each
 CHANNEL_ID_DESTINATION = 1256777917468381246  # ID for the finished sentences channel
 CHANNEL_ID_DESTINATION_RANDOM = 1243270048295026811  # ID for general chat
 
@@ -26,12 +25,12 @@ async def fetch_message_history(channel):
         print(f"Error fetching message history: {e}")
 
 
-async def initialize(client):
+async def initialize(client, channel_id):
     print("INITIALIZING ONE-WORD-EACH MODULE")
 
-    original_channel = client.get_channel(CHANNEL_ID_ORIGINAL)
+    original_channel = client.get_channel(channel_id)
     if original_channel is None:
-        print(f"Failed to get channel with ID {CHANNEL_ID_ORIGINAL}")
+        print(f"Failed to get channel with ID {channel_id}")
         return
     await fetch_message_history(original_channel)
     print(f"Fetched messages: {words}")
@@ -40,16 +39,15 @@ async def initialize(client):
 
 
 async def handleMessage(client, message):
-    if message.channel.id == CHANNEL_ID_ORIGINAL and not message.author.bot:
-        print(f"New message in #{message.channel.name} by {message.author.name}: {message.content}")
-        words.append(message.content)
-        if message.content.endswith(('.', '!', '?')):
-            destination_channel = client.get_channel(CHANNEL_ID_DESTINATION)
-            if destination_channel is None:
-                print(f"Failed to get destination channel with ID {CHANNEL_ID_DESTINATION}")
-                return
-            sentence = form_sentence()
-            print(f"Sending sentence: {sentence}")
-            await destination_channel.send(f"#one-word-each has just finished a new sentence.\n"
-                                           f"<t:{int(time.time())}>: {sentence}")
-            words.clear()
+    print(f"New message in #{message.channel.name} by {message.author.name}: {message.content}")
+    words.append(message.content)
+    if message.content.endswith(('.', '!', '?')):
+        destination_channel = client.get_channel(CHANNEL_ID_DESTINATION)
+        if destination_channel is None:
+            print(f"Failed to get destination channel with ID {CHANNEL_ID_DESTINATION}")
+            return
+        sentence = form_sentence()
+        print(f"Sending sentence: {sentence}")
+        await destination_channel.send(f"#one-word-each has just finished a new sentence.\n"
+                                       f"<t:{int(time.time())}>: {sentence}")
+        words.clear()
