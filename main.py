@@ -1,11 +1,10 @@
 import discord
-import dotenv
+import os
 
 import one_word_each
 import album_exchange_pairs
 
-config = dotenv.dotenv_values()
-TOKEN = config.get("TOKEN")
+token = os.getenv("TOKEN")
 
 ONE_WORD_EACH_CHANNEL = 1246881463266181171  # ID for #one-word-each
 
