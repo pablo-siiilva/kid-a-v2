@@ -3,8 +3,10 @@ import os
 
 import one_word_each
 import album_exchange_pairs
+import random_song_from_playlist
 
 token = os.getenv("TOKEN")
+youtube_api_token = os.getenv("YOUTUBE_TOKEN")
 
 ONE_WORD_EACH_CHANNEL = 1246881463266181171  # ID for #one-word-each
 
@@ -19,7 +21,9 @@ client = discord.Client(intents=intents)
 async def on_ready():
     print(f'Bot connected as {client.user}')
     try:
+
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
+        await random_song_from_playlist.initialize(client, youtube_api_token)
 
     except Exception as e:
         print(f"Error in on_ready: {e}")
