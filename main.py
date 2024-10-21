@@ -16,10 +16,12 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+CHANNEL_GENERAL = 1243270048295026811
 
 @client.event
 async def on_ready():
     print(f'Bot connected as {client.user}')
+    await client.get_channel(CHANNEL_GENERAL).send("Hello i just restarted and now i am alive again :)")
     try:
 
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)

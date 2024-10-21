@@ -5,6 +5,7 @@ from datetime import timedelta
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
 
+CHANNEL_GENERAL = 1243270048295026811;
 
 def get_all_videos_from_playlist(youtube, playlist_id):
     videos = []
@@ -75,22 +76,22 @@ def pick_random_prompt():
         "Today's track is:",
         "Today's track is:",
         "Today's track is:",
-        "Today's track is:"
-        "What do you think about this track?"
-        "What are your thoughts on this song?"
-        "Are you a fan of this song?"
-        "How are you feeling on this song?"
-        "Ever heard this one before?"
-        "Here's a listen for ya!"
-        "Here's a listen for ya!"
-        "Here's a listen for ya!"
-        "Here's a listen for ya!"
-        "Here's a listen for ya!"
-        "Here's a song for you!"
-        "Here's a song for you!"
-        "Here's a song for you!"
-        "Here's a song for you!"
-        "Here's a song for you!"
+        "Today's track is:",
+        "What do you think about this track?",
+        "What are your thoughts on this song?",
+        "Are you a fan of this song?",
+        "How are you feeling on this song?",
+        "Ever heard this one before?",
+        "Here's a listen for ya!",
+        "Here's a listen for ya!",
+        "Here's a listen for ya!",
+        "Here's a listen for ya!",
+        "Here's a listen for ya!",
+        "Here's a song for you!",
+        "Here's a song for you!",
+        "Here's a song for you!",
+        "Here's a song for you!",
+        "Here's a song for you!",
         "Would you cry to this song?"
     ])
 
@@ -102,7 +103,7 @@ async def send_video(bot, youtube):
     video_id, video_title, video_url = get_random_video_from_playlist(youtube, playlist_id)
 
     if video_id:
-        channel = bot.get_channel(1243270048295026811)
+        channel = bot.get_channel(CHANNEL_GENERAL)
         prompt = pick_random_prompt()
         message = f"🎶 {prompt} 🎶 \n**{video_title}**\n{video_url}"
         print("Sending: " + message)
