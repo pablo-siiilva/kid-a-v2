@@ -5,7 +5,7 @@ from datetime import timedelta
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
 
-CHANNEL_GENERAL = 1243270048295026811;
+CHANNEL_GENERAL = 1243278540846399641
 
 def get_all_videos_from_playlist(youtube, playlist_id):
     videos = []
