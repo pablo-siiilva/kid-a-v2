@@ -122,19 +122,9 @@ async def initialize(client, youtube_api_token):
 
     while True:
         now = datetime.now()
-        next_noon = datetime.combine(now.date(), datetime.min.time()) + timedelta(hours=12)
-        next_midnight = datetime.combine(now.date(), datetime.min.time())
-
-        if now < next_midnight:
-            next_run = next_midnight
-        elif now < next_noon:
-            next_run = next_noon
-        else:
-            next_run = next_midnight + timedelta(days=1)
-
+        next_run = datetime.combine(now.date(), datetime.min.time()) + timedelta(hours=12)
         sleep_duration = (next_run - now).total_seconds()
         print(f"Sleeping for {sleep_duration} seconds until next random song at {next_run}")
         await asyncio.sleep(sleep_duration)
 
-        # Executa a função de envio de vídeo
         await send_video(client, youtube)
