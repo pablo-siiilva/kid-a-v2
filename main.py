@@ -10,7 +10,7 @@ token = os.getenv("TOKEN")
 youtube_api_token = os.getenv("YOUTUBE_TOKEN")
 
 ONE_WORD_EACH_CHANNEL = 1246881463266181171  # ID for #one-word-each
-BUMP_CHANNEL = 1246881463266181171  # ID for #one-word-each
+BUMP_CHANNEL = 1310459216707719189  # ID for #one-word-each
 
 intents = discord.Intents.default()
 intents.messages = True
