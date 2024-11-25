@@ -4,11 +4,13 @@ import os
 import one_word_each
 import album_exchange_pairs
 import random_song_from_playlist
+import bumpin_that
 
 token = os.getenv("TOKEN")
 youtube_api_token = os.getenv("YOUTUBE_TOKEN")
 
 ONE_WORD_EACH_CHANNEL = 1246881463266181171  # ID for #one-word-each
+BUMP_CHANNEL = 1246881463266181171  # ID for #one-word-each
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -21,10 +23,10 @@ CHANNEL_GENERAL = 1243270048295026811
 @client.event
 async def on_ready():
     print(f'Bot connected as {client.user}')
-    await client.get_channel(CHANNEL_GENERAL).send("Hello i just restarted and now i am alive again :)")
     try:
 
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
+        await bumpin_that.initialize(client, BUMP_CHANNEL)
         await random_song_from_playlist.initialize(client, youtube_api_token)
 
     except Exception as e:
