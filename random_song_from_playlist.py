@@ -1,7 +1,7 @@
 import asyncio
 import random
-import discord
-from datetime import timedelta
+
+from printutil import log
 
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
@@ -100,7 +100,7 @@ def pick_random_prompt():
 
 
 async def send_video(bot, youtube):
-    print("Time for sending a song!")
+    await log("[SONG OF THE DAY] Time for sending a song!")
 
     now = datetime.now()
     if now.month == 12 and now.day == 25:
@@ -125,14 +125,14 @@ async def send_video(bot, youtube):
         video_id, video_title, video_url = True, "Earth, Wind & Fire - September", "https://www.youtube.com/watch?v=Gs069dndIYk"
         prompt = "🍂 What day is it again? I don't remember. Do you remember? 🍁"
     else:
-        print("Finding item on playlist")
+        await log("[SONG OF THE DAY] Finding item on playlist...")
         video_id, video_title, video_url = get_random_video_from_playlist(youtube, PLAYLIST_ID)
         prompt = pick_random_prompt()
 
     if video_id:
         channel = bot.get_channel(CHANNEL_GENERAL)
         message = f"🎶 {prompt} 🎶 \n**{video_title}**\n{video_url}"
-        print("Sending: " + message)
+        await log(f"[SONG OF THE DAY] Sending: ${message}")
 
         sent_message = await channel.send(message)
 
@@ -143,9 +143,9 @@ async def send_video(bot, youtube):
 
 
 async def initialize(client, youtube_api_token):
-    print("INITIALIZING RANDOM SONG MODULE")
+    await log("[SONG OF THE DAY] INITIALIZING RANDOM SONG MODULE")
     youtube = build('youtube', 'v3', developerKey=youtube_api_token)
-    print("RANDOM SONG MODULE INITIALIZED SUCCESSFULLY")
+    await log("[SONG OF THE DAY] RANDOM SONG MODULE INITIALIZED SUCCESSFULLY")
 
     while True:
         now = datetime.now()
@@ -153,6 +153,6 @@ async def initialize(client, youtube_api_token):
         if now >= next_run:
             next_run += timedelta(days=1)
         sleep_duration = (next_run - now).total_seconds()
-        print(f"Sleeping for {sleep_duration} seconds until next random song at {next_run}")
+        await log(f"[SONG OF THE DAY] Sleeping for {sleep_duration} seconds until next random song at {next_run}")
         await asyncio.sleep(sleep_duration)
         await send_video(client, youtube)

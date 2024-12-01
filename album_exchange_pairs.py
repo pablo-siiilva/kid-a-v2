@@ -1,8 +1,10 @@
 import random
 
+from printutil import log
 
-async def handleMessage(client, message):
-    print(f"New pairs message in #{message.channel.name} by {message.author.name}: {message.content}")
+
+async def handle_message(client, message):
+    await log(f"[PAIRS] New pairs message in #{message.channel.name} by {message.author.name}: {message.content}")
     channel_id = message.channel.id
     arguments = message.content.split(" ")
     arguments.pop(0)
@@ -22,7 +24,7 @@ async def handleMessage(client, message):
     # Send message
     destination_channel = client.get_channel(channel_id)
     if destination_channel is None:
-        print(f"Failed to get destination channel with ID {channel_id}")
+        await log(f"[PAIRS] Failed to get destination channel with ID {channel_id}")
         return
-    print(f"Sending -> {response}")
+    await log(f"[PAIRS] Sending -> {response}")
     await destination_channel.send(f"{response}")

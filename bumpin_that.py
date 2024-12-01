@@ -2,18 +2,21 @@ import threading
 import time
 import asyncio
 
+from printutil import log
+
 TWELVE_HOURS = 12 * 60 * 60
 
 
 async def initialize(client, channel):
-    print("INITIALIZING BUMP MODULE")
+    await log("[BUMP] INITIALIZING BUMP MODULE")
 
     async def wrapper():
         while True:
-            print("WAITING FOUR MORE HOURS FOR BUMP")
+            await log("[BUMP] WAITING TWELVE HOURS FOR NEXT BUMP")
             await asyncio.sleep(TWELVE_HOURS)
-            print("BUMPING THAT")
+            await log("[BUMP] BUMPING THAT")
+            await log("[BUMP] SENDING https://cdn.discordapp.com/attachments/637679343740649512/1310461793294094356/Sem_titulo.png?ex=67454e26&is=6743fca6&hm=83f55dfdf8ea755af978556c41f1e5e6d59e7f32af9cbebb3a2b060227ccd529&")
             await client.get_channel(channel).send("https://cdn.discordapp.com/attachments/637679343740649512/1310461793294094356/Sem_titulo.png?ex=67454e26&is=6743fca6&hm=83f55dfdf8ea755af978556c41f1e5e6d59e7f32af9cbebb3a2b060227ccd529&")
 
     asyncio.create_task(wrapper())
-    print("BUMP MODULE INITIALIZED SUCCESSFULLY")
+    await log("[BUMP] BUMP MODULE INITIALIZED SUCCESSFULLY")

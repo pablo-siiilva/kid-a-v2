@@ -6,6 +6,8 @@ import album_exchange_pairs
 import random_song_from_playlist
 import bumpin_that
 
+from printutil import log, set_client
+
 token = os.getenv("TOKEN")
 youtube_api_token = os.getenv("YOUTUBE_TOKEN")
 
@@ -22,7 +24,7 @@ CHANNEL_GENERAL = 1243270048295026811
 
 @client.event
 async def on_ready():
-    print(f'Bot connected as {client.user}')
+    await log(f'[MAIN] Bot connected as {client.user}')
     try:
 
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
@@ -30,22 +32,22 @@ async def on_ready():
         await random_song_from_playlist.initialize(client, youtube_api_token)
 
     except Exception as e:
-        print(f"Error in on_ready: {e}")
+        await log(f"[MAIN] EXCEPTION: {e}")
 
 
 @client.event
 async def on_connect():
-    print("Bot is attempting to connect to Discord...")
+    await log("[MAIN] Attempting to connect to Discord...")
 
 
 @client.event
 async def on_disconnect():
-    print("Bot was disconnected from Discord.")
+    await log("[MAIN] I was disconnected from Discord! >:(")
 
 
 @client.event
 async def on_error(event, *args, **kwargs):
-    print(f"Error detected in event {event}: {args} - {kwargs}")
+    await log(f"[MAIN] ERROR!!! {event}: {args} - {kwargs}")
 
 
 @client.event
@@ -54,16 +56,17 @@ async def on_message(message):
         if not message.author.bot:
             # If message comes from the one-word-each channel
             if message.channel.id == ONE_WORD_EACH_CHANNEL:
-                await one_word_each.handleMessage(client, message)
+                await one_word_each.handle_message(client, message)
 
             if message.content.startswith(".pairs"):
-                await album_exchange_pairs.handleMessage(client, message)
+                await album_exchange_pairs.handle_message(client, message)
     except Exception as e:
-        print(f"Error in on_message: {e}")
+        await log(f"[MAIN] Error in on_message: {e}")
 
 
-print("Starting bot...")
 try:
+    set_client(client)
+    log("[MAIN] Starting bot...")
     client.run(token)
 except Exception as e:
-    print(f"Error running the bot: {e}")
+    log(f"[MAIN] Error running the bot: {e}")
