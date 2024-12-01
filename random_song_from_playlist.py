@@ -1,9 +1,12 @@
 import asyncio
 import random
+import discord
 from datetime import timedelta
 
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
+
+PLAYLIST_ID = "PLVADazPd2uMGe7D3fkGYCbizIhNZCUqWo"
 
 CHANNEL_GENERAL = 1243278540846399641
 
@@ -98,13 +101,36 @@ def pick_random_prompt():
 
 async def send_video(bot, youtube):
     print("Time for sending a song!")
-    playlist_id = "PLVADazPd2uMGe7D3fkGYCbizIhNZCUqWo"
-    print("Finding item on playlist")
-    video_id, video_title, video_url = get_random_video_from_playlist(youtube, playlist_id)
+
+    now = datetime.now()
+    if now.month == 12 and now.day == 25:
+        video_id, video_title, video_url = True, "Wham! - Last Christmas", "https://www.youtube.com/watch?v=E8gmARGvPlI"
+        prompt = "🎄 Merry christmas! :D 🎄"
+    elif now.month == 2 and now.day == 14:
+        video_id, video_title, video_url = True, "Mazzy Star - Fade Into You", "https://www.youtube.com/watch?v=ImKY6TZEyrI"
+        prompt = "This one is for all you lonely fucks. Happy valentine's day!"
+    elif now.month == 10 and now.day == 31:
+        video_id, video_title, video_url = True, "Michael Jackson - Thriller", "https://www.youtube.com/watch?v=sOnqjkJTMaA"
+        prompt = "🎃 Spooky OOOOOHHH!!!! Happy Halloween! :D 👻"
+    elif now.month == 7 and now.day == 4:
+        video_id, video_title, video_url = True, "America, Fuck Yeah! Ultimate Edition", "https://www.youtube.com/watch?v=7R5A0pg4oN8"
+        prompt = "So... America!?"
+    elif now.month == 4 and now.day == 1:
+        video_id, video_title, video_url = True, "Rick Astley - Never Gonna Give You Up", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        prompt = "Lol"
+    elif now.month == 4 and now.day == 20:
+        video_id, video_title, video_url = True, "Sublime - Smoke Two Joints", "https://www.youtube.com/watch?v=KQnzeKKg7Yc"
+        prompt = "Peace and love ☮🌿😻"
+    elif now.month == 9 and now.day == 21:
+        video_id, video_title, video_url = True, "Earth, Wind & Fire - September", "https://www.youtube.com/watch?v=Gs069dndIYk"
+        prompt = "🍂 What day is it again? I don't remember. Do you remember? 🍁"
+    else:
+        print("Finding item on playlist")
+        video_id, video_title, video_url = get_random_video_from_playlist(youtube, PLAYLIST_ID)
+        prompt = pick_random_prompt()
 
     if video_id:
         channel = bot.get_channel(CHANNEL_GENERAL)
-        prompt = pick_random_prompt()
         message = f"🎶 {prompt} 🎶 \n**{video_title}**\n{video_url}"
         print("Sending: " + message)
 
@@ -113,6 +139,7 @@ async def send_video(bot, youtube):
         await sent_message.add_reaction("🥵")
         await sent_message.add_reaction("😐")
         await sent_message.add_reaction("🥶")
+        await sent_message.create_thread(f"${now.day}/${now.month}/${now.year} - ${video_title}")
 
 
 async def initialize(client, youtube_api_token):
