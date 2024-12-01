@@ -66,7 +66,6 @@ async def on_message(message):
 
 try:
     set_client(client)
-    log("[MAIN] Starting bot...")
     client.run(token)
 except Exception as e:
-    log(f"[MAIN] Error running the bot: {e}")
+    print(f"[MAIN] Error running the bot: {e}")
