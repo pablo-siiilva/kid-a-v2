@@ -132,14 +132,14 @@ async def send_video(bot, youtube):
     if video_id:
         channel = bot.get_channel(CHANNEL_GENERAL)
         message = f"🎶 {prompt} 🎶 \n**{video_title}**\n{video_url}"
-        await log(f"[SONG OF THE DAY] Sending: ${message}")
+        await log(f"[SONG OF THE DAY] Sending: {message}")
 
         sent_message = await channel.send(message)
 
         await sent_message.add_reaction("🥵")
         await sent_message.add_reaction("😐")
         await sent_message.add_reaction("🥶")
-        await sent_message.create_thread(f"${now.day}/${now.month}/${now.year} - ${video_title}")
+        await sent_message.create_thread(name=f"{now.day}/{now.month}/{now.year} - {video_title}")
 
 
 async def initialize(client, youtube_api_token):
