@@ -4,11 +4,12 @@ import random
 from printutil import log
 
 from googleapiclient.discovery import build
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 PLAYLIST_ID = "PLVADazPd2uMGe7D3fkGYCbizIhNZCUqWo"
 
 CHANNEL_GENERAL = 1243278540846399641
+
 
 def get_all_videos_from_playlist(youtube, playlist_id):
     videos = []
@@ -142,14 +143,23 @@ async def send_video(bot, youtube):
         await sent_message.create_thread(name=f"{now.day}/{now.month}/{now.year} - {video_title}")
 
 
+is_initialized = False
+
+
 async def initialize(client, youtube_api_token):
+    global is_initialized
+    if is_initialized:
+        await log("[SONG OF THE DAY] Module already initialized. Skipping.")
+        return
+    is_initialized = True
+
     await log("[SONG OF THE DAY] INITIALIZING RANDOM SONG MODULE")
     youtube = build('youtube', 'v3', developerKey=youtube_api_token)
     await log("[SONG OF THE DAY] RANDOM SONG MODULE INITIALIZED SUCCESSFULLY")
 
     while True:
         now = datetime.now()
-        next_run = datetime.combine(now.date(), datetime.min.time()) + timedelta(hours=12)
+        next_run = datetime.combine(now.date(), time(hour=12))
         if now >= next_run:
             next_run += timedelta(days=1)
         sleep_duration = (next_run - now).total_seconds()
