@@ -26,12 +26,13 @@ CHANNEL_GENERAL = 1243270048295026811
 
 deleted_messages = []
 
+
 @client.event
 async def on_ready():
     await log(f'[MAIN] Bot connected as {client.user}')
     try:
 
-        await client.get_channel(CHANNEL_GENERAL).send("Hello fuckers >:)")
+        await client.get_channel(CHANNEL_GENERAL).send("🩲")
 
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
         await bumpin_that.initialize(client, BUMP_CHANNEL)
@@ -60,8 +61,30 @@ async def on_error(event, *args, **kwargs):
 async def on_message(message):
     try:
         if not message.author.bot:
+            if client.user in message.mentions:
+                embed = discord.Embed(title="Hey here are my commands", color=discord.Color.purple())
+                embed.add_field(name=".pairs [elements]",
+                                value="Arranges all elements passed on the command in randomly selected pairs. This "
+                                      "command was designed to be used when sorting participants on the album "
+                                      "exchange events. Elements passed through the command must be separated by "
+                                      "spaces.",
+                                inline=False)
+                embed.add_field(name=".deleted [opt=number_of_messages]",
+                                value="Recovers the last messages to be deleted in the server. If no argument is "
+                                      "provided, it'll only retreive the very last message deleted. Limited to ten "
+                                      "messages.",
+                                inline=False)
+                embed.add_field(name=".groove",
+                                value="How do you say... *\"da groovy\"*? How do you say... *\"da GOD\"*???",
+                                inline=False)
+                await message.channel.send(embed=embed)
+
             if message.channel.id == ONE_WORD_EACH_CHANNEL:
                 await one_word_each.handle_message(client, message)
+
+            if message.content.startswith(".groove"):
+                await message.channel.send("Well well well, here goes the greatest song of all "
+                                           "time\nhttps://www.youtube.com/watch?v=etviGf1uWlg")
 
             if message.content.startswith(".pairs"):
                 await album_exchange_pairs.handle_message(client, message)
@@ -74,6 +97,7 @@ async def on_message(message):
                 count = min(count, len(deleted_messages))
 
                 if count > 0:
+                    await message.channel.send(f"I found a total of {count} deleted message(s)!")
                     for deleted in deleted_messages[-count:]:
                         embed = discord.Embed(title="Deleted message", color=discord.Color.red())
                         embed.add_field(name="Author", value=deleted["author"], inline=False)
@@ -84,7 +108,7 @@ async def on_message(message):
                             embed.add_field(name="Media", value=deleted["media"], inline=False)
                         await message.channel.send(embed=embed)
                 else:
-                    await message.channel.send("Nenhuma mensagem apagada registrada.")
+                    await message.channel.send("Sorry, i can't remember any deleted messages :(")
 
     except Exception as e:
         await log(f"[MAIN] Error in on_message: {e}")
@@ -115,7 +139,7 @@ async def on_message_delete(message):
             if len(deleted_messages) > 10:
                 deleted_messages.pop(0)
 
-            await log(f"Mensagem apagada registrada: {deleted_message_info}")
+            await log(f"MESSAGE DELETED: {deleted_message_info}")
         except Exception as e:
             await log(f"[MAIN] Erro em on_message_delete: {e}")
 
