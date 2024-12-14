@@ -32,7 +32,7 @@ async def on_ready():
     await log(f'[MAIN] Bot connected as {client.user}')
     try:
 
-        await client.get_channel(CHANNEL_GENERAL).send("🩲")
+        await client.get_channel(CHANNEL_GENERAL).send("🧯")
 
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
         await bumpin_that.initialize(client, BUMP_CHANNEL)
@@ -109,6 +109,30 @@ async def on_message(message):
                         await message.channel.send(embed=embed)
                 else:
                     await message.channel.send("Sorry, i can't remember any deleted messages :(")
+
+            if message.content.startswith(".send") and message.author.guild_permissions.administrator:
+                args = message.content.split(" ", 2)  # Split into ".send", "[#channel]", "[message]"
+                if len(args) < 3:
+                    await message.channel.send("Usage: `.send [#channel] [message]`")
+                    return
+
+                # Extract channel and message content
+                channel_mention = args[1]
+                msg_content = args[2]
+
+                # Extract channel ID from mention (e.g., <#123456789012345678>)
+                if channel_mention.startswith("<#") and channel_mention.endswith(">"):
+                    channel_id = int(channel_mention[2:-1])
+                    target_channel = client.get_channel(channel_id)
+
+                    if target_channel:
+                        # Send the message to the specified channel
+                        await target_channel.send(msg_content)
+                        await message.channel.send(f"Message sent to {target_channel.mention}.")
+                    else:
+                        await message.channel.send("Invalid channel. Please ensure the bot has access to the channel.")
+                else:
+                    await message.channel.send("Please mention a valid channel (e.g., `#channel-name`).")
 
     except Exception as e:
         await log(f"[MAIN] Error in on_message: {e}")
