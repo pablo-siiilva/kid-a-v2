@@ -140,7 +140,6 @@ async def send_video(bot, youtube):
         await sent_message.add_reaction("🥵")
         await sent_message.add_reaction("😐")
         await sent_message.add_reaction("🥶")
-        await sent_message.create_thread(name=f"{now.day}/{now.month}/{now.year} - {video_title}")
 
 
 is_initialized = False

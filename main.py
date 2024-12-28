@@ -75,7 +75,7 @@ async def on_message(message):
                                       "messages.",
                                 inline=False)
                 embed.add_field(name=".groove",
-                                value="How do you say... *\"da groovy\"*? How do you say... *\"da GOD\"*???",
+                                value="How do you say... *\"da groovy\"*? How do you say... *\"da GORGEOUS\"*???",
                                 inline=False)
                 await message.channel.send(embed=embed)
 
