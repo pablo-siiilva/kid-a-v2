@@ -32,7 +32,7 @@ async def on_ready():
     await log(f'[MAIN] Bot connected as {client.user}')
     try:
 
-        await client.get_channel(CHANNEL_GENERAL).send("🧯")
+        await client.get_channel(CHANNEL_GENERAL).send("poopity scoop scoop didi woop woopdi scoopdi woop")
 
         await one_word_each.initialize(client, ONE_WORD_EACH_CHANNEL)
         await bumpin_that.initialize(client, BUMP_CHANNEL)
