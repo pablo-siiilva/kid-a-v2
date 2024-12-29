@@ -61,7 +61,7 @@ async def on_error(event, *args, **kwargs):
 async def on_message(message):
     try:
         if not message.author.bot:
-            if client.user in message.mentions:
+            if client.user in message.mentions and not message.reference:
                 embed = discord.Embed(title="Hey here are my commands", color=discord.Color.purple())
                 embed.add_field(name=".pairs [elements]",
                                 value="Arranges all elements passed on the command in randomly selected pairs. This "
